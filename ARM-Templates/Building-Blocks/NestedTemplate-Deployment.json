@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name":{
+            "type": "string"
+        },
+        "location":{
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]"
+        },
+        "serverFarmId":{
+            "type": "string"
+        },
+        "alwaysOn":{
+            "type": "bool",
+            "defaultValue": false
+        },
+        "currentStack":{
+            "type": "string",
+            "defaultValue": "dotnetcore"
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "name": "linkedTemplate",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri":"https://raw.githubusercontent.com/tommysundling/Azure-Examples/master/ARM-Templates/Building-Blocks/WebApp-Template.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "name": { "value": "[parameters('name')]" },
+                    "location": { "value": "[parameters('location')]" },
+                    "serverFarmId": { "value": "[parameters('serverFarmId')]" },
+                    "alwaysOn": { "value": "[parameters('alwaysOn')]" },
+                    "currentStack": { "value": "[parameters('currentStack')]" }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
