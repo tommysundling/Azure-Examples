@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "habitit-web-dev"
+        },
+        "location": {
+            "value": "West Europe"
+        },
+        "serverFarmId": {
+            "value": "/subscriptions/c602db5e-xxxx-xxxx-xxxx-55ab057c413d/resourceGroups/YourResourceGroup/providers/Microsoft.Web/serverfarms/YourServerFarmName"
+        },
+        "alwaysOn": {
+            "value": false
+        },
+        "currentStack": {
+            "value": "dotnetcore"
+        }
+    }
+}
