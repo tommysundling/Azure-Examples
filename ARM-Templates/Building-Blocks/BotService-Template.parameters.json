@@ -1,0 +1,15 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"azureADAppId": {
+			"value": "1001e0fb-xxxx-xxxx-xxxx-35f15da6xxxx"
+		},
+		"azureADAppSecret": {
+			"value": "263cbd7e-xxxx-xxxx-xxxx-dfd4f01dxxxx"
+		},
+		"botId": {
+			"value": "HabitItBot"
+		}
+	}
+}

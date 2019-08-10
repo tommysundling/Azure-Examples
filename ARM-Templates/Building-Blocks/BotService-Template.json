@@ -1,0 +1,109 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"azureADAppId": {
+			"type": "string",
+			"metadata": {
+				"description": "Active Directory App ID, set as MicrosoftAppId in the Web App's Application Settings."
+			}
+		},
+		"azureADAppSecret": {
+			"type": "string",
+			"metadata": {
+				"description": "Active Directory App Password, set as MicrosoftAppPassword in the Web App's Application Settings. Defaults to \"\"."
+			}
+		},
+		"botId": {
+			"type": "string",
+			"metadata": {
+				"description": "The globally unique and immutable bot ID. Also used to configure the displayName of the bot, which is mutable."
+			}
+		},
+		"appServicePlanName": {
+			"type": "string",
+			"defaultValue": "HabitItServicePlan",
+			"metadata": {
+				"description": "Name of the existing App Service Plan used to create the Web App for the bot."
+			}
+		},
+		"skuName": {
+			"type": "string",
+			"defaultValue": "F1"
+		},
+		"skuCapacity": {
+			"type": "int",
+			"defaultValue": 1,
+			"minValue": 1
+		},
+		"webAppName": {
+			"type": "string",
+			"defaultValue": "HabitItBot"
+		},
+		"botServiceSkuName": {
+			"type": "string",
+			"defaultValue": "F0",
+			"allowedValues": [
+				"F0",
+				"S1"
+			]
+		}
+	},
+	"variables": {
+		"siteHost": "[concat(parameters('webAppName'), '.azurewebsites.net')]",
+		"botEndpoint": "[concat('https://', variables('siteHost'), '/api/messages')]"
+	},
+	"resources": [
+		{
+			"apiVersion": "2015-08-01",
+			"name": "[parameters('appServicePlanName')]",
+			"type": "Microsoft.Web/serverfarms",
+			"location": "[resourceGroup().location]",
+			"tags": {
+				"displayName": "HostingPlan"
+			},
+			"sku": {
+				"name": "[parameters('skuName')]",
+				"capacity": "[parameters('skuCapacity')]"
+			},
+			"properties": {
+				"name": "[parameters('appServicePlanName')]"
+			}
+		},
+		{
+			"apiVersion": "2015-08-01",
+			"name": "[parameters('webAppName')]",
+			"type": "Microsoft.Web/sites",
+			"location": "[resourceGroup().location]",
+			"dependsOn": [
+				"[resourceId('Microsoft.Web/serverfarms/', parameters('appServicePlanName'))]"
+			],
+			"properties": {
+				"name": "[parameters('webAppName')]",
+				"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+			}
+		},
+		{
+			"apiVersion": "2017-12-01",
+			"type": "Microsoft.BotService/botServices",
+			"name": "[parameters('webAppName')]",
+			"location": "global",
+			"kind": "sdk",
+			"sku": {
+				"name": "parameters('botServiceSkuName')]"
+			},
+			"properties": {
+				"name": "[parameters('webAppName')]",
+				"displayName": "[parameters('webAppName')]",
+				"endpoint": "[variables('botEndpoint')]",
+				"msaAppId": "[parameters('azureADAppId')]"
+			}
+		}
+	],
+	"outputs": {  
+		"servicePlanId": {
+			"type": "string",
+			"value": "[resourceId('Microsoft.Web/serverfarms/', parameters('appServicePlanName'))]"
+		}
+	}
+}
