@@ -1,0 +1,18 @@
+﻿{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "habitit-function-dev"
+        },
+        "storageAccountName": {
+            "value": "habititfunctionstodev"
+        },
+        "storageAccountId": {
+            "value": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/HabitIt-Dev/providers/Microsoft.Storage/storageAccounts/habititfunctionstodev"
+        },
+        "location": {
+            "value": "West Europe"
+        }
+    }
+}
